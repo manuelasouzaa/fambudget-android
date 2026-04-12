@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">FamBudget</string>
+
+    <string name="return_title">Voltar</string>
+
+    <string name="login_title">Bem-vindo de volta!</string>
+    <string name="login_subtitle">Faça login para continuar gerenciando suas finanças.</string>
+    <string name="login_do_not_have_account_message">Ainda não tem uma conta?</string>
+    <string name="login_register_message">Cadastre-se</string>
+    <string name="login_enter_button_label">Entrar</string>
+    <string name="login_forgot_password_message">Esqueceu sua senha?</string>
+
+    <string name="register_title">Novo por aqui?</string>
+    <string name="register_subtitle">Faça o cadastro agora mesmo</string>
+    <string name="register_already_have_an_account_message">Já tem uma conta?</string>
+    <string name="register_enter_button_label">Cadastrar</string>
+    <string name="register_success_message">Usuário cadastrado com sucesso!</string>
+
+    <string name="auth_fields_name_hint">Nome completo</string>
+    <string name="auth_fields_email_hint">E-mail</string>
+    <string name="auth_fields_phone_number_hint">Telefone</string>
+    <string name="auth_fields_password_hint">Senha</string>
+    <string name="auth_fields_confirm_password_hint">Confirmar senha</string>
+
+    <string name="auth_error_invalid_email">Insira um e-mail válido</string>
+    <string name="auth_error_invalid_phone">Insira um número de celular válido</string>
+    <string name="auth_error_email_required">O campo e-mail é obrigatório</string>
+    <string name="auth_error_password_required">O campo senha é obrigatório</string>
+    <string name="auth_error_empty_fields">Preencha todos os campos</string>
+    <string name="auth_error_passwords_do_not_match">As senhas não coincidem</string>
+    <string name="auth_error_password_invalid_format">A senha deve ter no mínimo 8 caracteres, utilizando pelo menos um caractere especial e uma letra maiúscula</string>
+
+    <string name="error_no_internet">Sem conexão com a internet</string>
+    <string name="error_connection_timeout">A conexão expirou, tente novamente</string>
+    <string name="error_unknown">Ocorreu um erro inesperado</string>
+
+    <string name="content_description_hide_password">Esconder senha</string>
+    <string name="content_description_show_password">Exibir senha</string>
+
+</resources>
