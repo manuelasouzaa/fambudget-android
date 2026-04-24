@@ -14,4 +14,10 @@ interface AuthRepository {
         userPassword: String
     ): Resource<ResponseBody?>
 
+    suspend fun validateCode(code: String): Resource<ResponseBody?>
+
+    suspend fun sendForgotPasswordEmail(userEmail: String): Resource<ResponseBody?>
+
+    suspend fun resetPassword(email: String, newPassword: String): Resource<ResponseBody?>
+
 }

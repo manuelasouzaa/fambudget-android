@@ -49,7 +49,8 @@ fun LoginScreen(
     viewModel: LoginViewModel,
     snackbarHostState: SnackbarHostState,
     onSnackbarTypeChange: (SnackbarType) -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarMessage = uiState.snackbarMessage
@@ -70,7 +71,8 @@ fun LoginScreen(
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onLoginClick = viewModel::login,
-        onRegisterClick = onRegisterClick
+        onRegisterClick = onRegisterClick,
+        onForgotPasswordClick = onForgotPasswordClick
     )
 }
 
@@ -81,7 +83,8 @@ private fun LoginContent(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit
 ) {
     Box(
         modifier = modifier.background(MaterialTheme.colorScheme.background),
@@ -146,9 +149,7 @@ private fun LoginContent(
                     text = stringResource(R.string.login_forgot_password_message),
                     modifier = Modifier
                         .wrapContentSize()
-                        .clickable {
-                            TODO("Implement forgot password")
-                        },
+                        .clickable { onForgotPasswordClick() },
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
@@ -200,7 +201,8 @@ private fun LoginScreenPreview() {
                 onEmailChange = {},
                 onPasswordChange = {},
                 onLoginClick = {},
-                onRegisterClick = {}
+                onRegisterClick = {},
+                onForgotPasswordClick = {}
             )
         }
     }
@@ -217,7 +219,8 @@ private fun LoginScreenDarkModePreview() {
                 onEmailChange = {},
                 onPasswordChange = {},
                 onLoginClick = {},
-                onRegisterClick = {}
+                onRegisterClick = {},
+                onForgotPasswordClick = {}
             )
         }
     }

@@ -4,10 +4,13 @@ import br.com.manuelasouzaa.fambudget.feature.auth.data.remote.AuthService
 import br.com.manuelasouzaa.fambudget.feature.auth.data.remote.AuthWebClient
 import br.com.manuelasouzaa.fambudget.feature.auth.data.repository.AuthRepositoryImpl
 import br.com.manuelasouzaa.fambudget.feature.auth.domain.AuthRepository
+import br.com.manuelasouzaa.fambudget.feature.auth.domain.usecase.ForgotPasswordUseCase
 import br.com.manuelasouzaa.fambudget.feature.auth.domain.usecase.LoginUseCase
 import br.com.manuelasouzaa.fambudget.feature.auth.domain.usecase.RegisterUseCase
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.ForgotPasswordViewModel
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.LoginViewModel
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.RegisterViewModel
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.ResetPasswordViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -21,9 +24,15 @@ val authModule = module {
 
     singleOf(::LoginUseCase)
 
+    viewModelOf(::ForgotPasswordViewModel)
+
+    singleOf(::ForgotPasswordUseCase)
+
     viewModelOf(::RegisterViewModel)
 
     singleOf(::RegisterUseCase)
+
+    viewModelOf(::ResetPasswordViewModel)
 
     singleOf(::AuthWebClient)
 

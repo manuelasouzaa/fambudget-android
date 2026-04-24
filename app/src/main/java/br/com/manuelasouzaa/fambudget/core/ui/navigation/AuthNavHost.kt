@@ -3,6 +3,7 @@ package br.com.manuelasouzaa.fambudget.core.ui.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import android.net.Uri
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,10 +19,14 @@ import androidx.navigation.compose.rememberNavController
 import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetSnackbar
 import br.com.manuelasouzaa.fambudget.core.ui.model.SnackbarType
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.ForgotPasswordScreen
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.LoginScreen
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.RegisterScreen
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.ResetPasswordScreen
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.ForgotPasswordViewModel
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.LoginViewModel
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.RegisterViewModel
+import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.ResetPasswordViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -76,9 +81,13 @@ fun AuthNavHost(sessionExpired: Boolean = false) {
                     onSnackbarTypeChange = ::onSnackbarTypeChange,
                     onRegisterClick = {
                         navController.navigate(AuthScreenDestinations.RegisterScreen.name)
+                    },
+                    onForgotPasswordClick = {
+                        navController.navigate(AuthScreenDestinations.ForgotPasswordScreen.name)
                     }
                 )
             }
+
 
             composable(AuthScreenDestinations.RegisterScreen.name) {
                 val viewModel = koinViewModel<RegisterViewModel>()
@@ -91,6 +100,38 @@ fun AuthNavHost(sessionExpired: Boolean = false) {
                     onRegistered = { email ->
                         navController.previousBackStackEntry?.savedStateHandle?.set("email", email)
                         navController.popBackStack()
+                    }
+                )
+            }
+
+            composable("${AuthScreenDestinations.ResetPasswordScreen.name}/{email}") { backStackEntry ->
+                val email = backStackEntry.arguments?.getString("email") ?: ""
+
+                val viewModel = koinViewModel<ResetPasswordViewModel>()
+
+                ResetPasswordScreen(
+                    viewModel = viewModel,
+                    snackbarHostState = snackbarHostState,
+                    onSnackbarTypeChange = ::onSnackbarTypeChange,
+                    onBackClick = { navController.popBackStack() },
+                    onLoginClick = {
+                        navController.navigate(AuthScreenDestinations.LoginScreen.name)
+                    },
+                    email = email
+                )
+            }
+
+            composable(AuthScreenDestinations.ForgotPasswordScreen.name) {
+                val viewModel = koinViewModel<ForgotPasswordViewModel>()
+
+                ForgotPasswordScreen(
+                    viewModel = viewModel,
+                    snackbarHostState = snackbarHostState,
+                    onSnackbarTypeChange = ::onSnackbarTypeChange,
+                    onBackClick = { navController.popBackStack() },
+                    onResetPasswordClick = { email ->
+                        val encodedEmail = Uri.encode(email)
+                        navController.navigate("${AuthScreenDestinations.ResetPasswordScreen.name}/$encodedEmail")
                     }
                 )
             }

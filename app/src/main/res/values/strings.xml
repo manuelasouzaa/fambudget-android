@@ -4,6 +4,18 @@
     <string name="return_title">Voltar</string>
     <string name="save_title">Salvar</string>
 
+    <string name="reset_password_title">Redefinir senha</string>
+    <string name="reset_new_password">Nova senha</string>
+    <string name="reset_password_subtitle">Digite sua nova senha e confirme abaixo para concluir a redefinição.</string>
+
+    <string name="validate_code">Código de verificação</string>
+    <string name="validate_code_subtitle">Enviaremos um código se o e-mail estiver cadastrado. Digite-o abaixo.</string>
+
+    <string name="forgot_password_title">Esqueceu sua senha?</string>
+    <string name="forgot_password_subtitle">Digite seu e-mail para recuperar a senha</string>
+    <string name="forgot_password_button_back_label">Voltar</string>
+    <string name="forgot_password_button_label">Confirmar</string>
+
     <string name="login_title">Bem-vindo de volta!</string>
     <string name="login_subtitle">Faça login para continuar gerenciando suas finanças.</string>
     <string name="login_do_not_have_account_message">Ainda não tem uma conta?</string>
@@ -26,6 +38,7 @@
     <string name="auth_error_invalid_email">Insira um e-mail válido</string>
     <string name="auth_error_invalid_phone">Insira um número de celular válido</string>
     <string name="auth_error_email_required">O campo e-mail é obrigatório</string>
+    <string name="auth_error_code_required">O código de validação é obrigatório</string>
     <string name="auth_error_password_required">O campo senha é obrigatório</string>
     <string name="auth_error_empty_fields">Preencha todos os campos</string>
     <string name="auth_error_passwords_do_not_match">As senhas não coincidem</string>
