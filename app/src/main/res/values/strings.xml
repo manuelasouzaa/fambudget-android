@@ -30,6 +30,24 @@
     <string name="auth_error_passwords_do_not_match">As senhas não coincidem</string>
     <string name="auth_error_password_invalid_format">A senha deve ter no mínimo 8 caracteres, utilizando pelo menos um caractere especial e uma letra maiúscula</string>
 
+    <string name="home_screen_hello_user">Olá, %1$s!</string>
+
+    <string name="current_balance">Saldo Atual</string>
+    <string name="positive_balance">Saldo Positivo</string>
+    <string name="negative_balance">Saldo Negativo</string>
+
+    <string name="expenses">Despesas</string>
+    <string name="income">Receitas</string>
+    <string name="category">Categoria</string>
+    <string name="home">Início</string>
+    <string name="transactions">Transações</string>
+    <string name="budgets">Orçamentos</string>
+    <string name="reports">Relatórios</string>
+    <string name="menu">Menu</string>
+
+    <string name="new_expense">Nova Despesa</string>
+    <string name="new_income">Nova Receita</string>
+
     <string name="error_no_internet">Sem conexão com a internet</string>
     <string name="error_connection_timeout">A conexão expirou, tente novamente</string>
     <string name="error_unknown">Ocorreu um erro inesperado</string>

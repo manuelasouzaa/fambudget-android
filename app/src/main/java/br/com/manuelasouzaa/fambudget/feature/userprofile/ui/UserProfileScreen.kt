@@ -1,4 +1,4 @@
-package br.com.manuelasouzaa.fambudget.feature.home
+package br.com.manuelasouzaa.fambudget.feature.userprofile.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
+fun UserProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
     Column(
         modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

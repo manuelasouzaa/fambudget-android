@@ -5,6 +5,9 @@ import br.com.manuelasouzaa.fambudget.core.di.modules.appModule
 import br.com.manuelasouzaa.fambudget.core.di.modules.networkModule
 import br.com.manuelasouzaa.fambudget.core.di.modules.sessionModule
 import br.com.manuelasouzaa.fambudget.feature.auth.di.modules.authModule
+import br.com.manuelasouzaa.fambudget.feature.expenses.di.modules.expensesModule
+import br.com.manuelasouzaa.fambudget.feature.home.di.modules.homeModule
+import br.com.manuelasouzaa.fambudget.feature.income.di.modules.incomeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -21,6 +24,9 @@ class FamBudgetApplication : Application() {
                     networkModule,
                     sessionModule,
                     authModule,
+                    homeModule,
+                    expensesModule,
+                    incomeModule
                 )
             )
         }
