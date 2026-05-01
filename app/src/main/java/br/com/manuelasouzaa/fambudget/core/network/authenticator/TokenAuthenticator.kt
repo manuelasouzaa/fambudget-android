@@ -3,6 +3,7 @@ package br.com.manuelasouzaa.fambudget.core.network.authenticator
 import br.com.manuelasouzaa.fambudget.core.session.model.TokenSession
 import br.com.manuelasouzaa.fambudget.core.session.repository.SessionRepository
 import br.com.manuelasouzaa.fambudget.feature.auth.data.remote.AuthService
+import br.com.manuelasouzaa.fambudget.feature.auth.data.remote.model.RefreshTokenRequest
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -13,29 +14,39 @@ class TokenAuthenticator(
     private val sessionRepository: SessionRepository,
     private val authService: Lazy<AuthService>
 ) : Authenticator {
+
+    private val lock = Any()
+
     override fun authenticate(route: Route?, response: Response): Request? {
-        if (responseCount(response) >= 3) return null
-        val newToken = runBlocking {
-            try {
-                val resp = authService.value.getRefreshToken(sessionRepository.getAccessToken())
+        if (responseCount(response) >= 2) return null
 
-                resp.body()?.let {
-                    sessionRepository.saveToken(
-                        TokenSession(
-                            it.accessToken,
-                            it.refreshToken
-                        )
-                    )
+        val newToken = synchronized(lock) {
+            runBlocking {
+                val currentToken = sessionRepository.getAccessToken()
+                val requestToken = response.request.header("Authorization")?.removePrefix("Bearer ")
+                if (requestToken != null && currentToken != requestToken && currentToken.isNotBlank()) {
+                    return@runBlocking currentToken
                 }
-
-                sessionRepository.getAccessToken()
-            } catch (e: Exception) {
-                null
+                try {
+                    val resp = authService.value.getRefreshToken(
+                        RefreshTokenRequest(sessionRepository.getRefreshToken())
+                    )
+                    val body = resp.body()
+                    if (resp.isSuccessful && body != null) {
+                        sessionRepository.saveToken(TokenSession(body.accessToken, body.refreshToken))
+                        body.accessToken
+                    } else {
+                        null
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
             }
         }
 
         if (newToken == null) {
-            runBlocking { sessionRepository.logout() }
+            runBlocking { sessionRepository.expireSession() }
             return null
         }
 
@@ -43,7 +54,6 @@ class TokenAuthenticator(
             .header("Authorization", "Bearer $newToken")
             .build()
     }
-
 
     private fun responseCount(response: Response): Int {
         var count = 1

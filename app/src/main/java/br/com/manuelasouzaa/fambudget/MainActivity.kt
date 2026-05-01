@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
 
             FamBudgetTheme {
 
-                when (uiState) {
-                    MainScreenUiState.Auth -> AuthNavHost()
+                when (val state = uiState) {
+                    is MainScreenUiState.Auth -> AuthNavHost(sessionExpired = state.sessionExpired)
 
                     MainScreenUiState.Loaded -> AppNavHost(onLogoutClick = rootViewModel::logout)
 

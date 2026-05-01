@@ -17,12 +17,12 @@ class AuthInterceptor(
 
         val token = runBlocking { sessionRepository.getAccessToken() }
 
-        val authenticatedRequest = request.newBuilder().apply {
-            if (token.isNotBlank()) {
-                header("Authorization", "Bearer $token")
-            }
-        }.build()
+        if (request.header("Authorization") != null || token.isBlank()) {
+            return chain.proceed(request)
+        }
 
-        return chain.proceed(authenticatedRequest)
+        return chain.proceed(
+            request.newBuilder().header("Authorization", "Bearer $token").build()
+        )
     }
 }

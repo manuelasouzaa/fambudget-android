@@ -13,7 +13,7 @@ class ErrorInterceptor(
 
         if (response.code == 412) {
             runBlocking {
-                sessionRepository.logout()
+                sessionRepository.expireSession()
             }
         }
 

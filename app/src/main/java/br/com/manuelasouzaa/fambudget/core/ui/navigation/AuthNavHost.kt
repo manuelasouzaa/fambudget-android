@@ -11,9 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetSnackbar
 import br.com.manuelasouzaa.fambudget.core.ui.model.SnackbarType
 import br.com.manuelasouzaa.fambudget.feature.auth.ui.LoginScreen
@@ -23,9 +25,18 @@ import br.com.manuelasouzaa.fambudget.feature.auth.ui.viewmodel.RegisterViewMode
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AuthNavHost() {
+fun AuthNavHost(sessionExpired: Boolean = false) {
     val snackbarHostState = remember { SnackbarHostState() }
     var snackbarType by remember { mutableStateOf(SnackbarType.ERROR) }
+
+    val expiredSessionMessage = stringResource(R.string.expired_session)
+
+    LaunchedEffect(sessionExpired) {
+        if (sessionExpired) {
+            snackbarType = SnackbarType.ERROR
+            snackbarHostState.showSnackbar(expiredSessionMessage)
+        }
+    }
 
     fun onSnackbarTypeChange(type: SnackbarType) {
         snackbarType = type

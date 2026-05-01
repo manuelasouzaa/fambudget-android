@@ -4,7 +4,6 @@ import br.com.manuelasouzaa.fambudget.BuildConfig
 import br.com.manuelasouzaa.fambudget.core.network.authenticator.TokenAuthenticator
 import br.com.manuelasouzaa.fambudget.core.network.interceptors.AuthInterceptor
 import br.com.manuelasouzaa.fambudget.core.network.interceptors.ErrorInterceptor
-import br.com.manuelasouzaa.fambudget.feature.auth.data.remote.AuthService
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 import org.koin.core.module.dsl.singleOf
@@ -35,5 +34,4 @@ val networkModule = module {
             .build()
     }
 
-    single { get<Retrofit>().create(AuthService::class.java) }
 }

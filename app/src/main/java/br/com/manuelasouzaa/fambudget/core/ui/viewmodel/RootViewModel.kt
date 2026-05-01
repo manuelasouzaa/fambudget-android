@@ -3,21 +3,31 @@ package br.com.manuelasouzaa.fambudget.core.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.manuelasouzaa.fambudget.core.session.repository.SessionRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-
 import kotlinx.coroutines.launch
 
 class RootViewModel(
     private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
+    private val sessionExpiredFlag = MutableStateFlow(false)
+
+    init {
+        viewModelScope.launch {
+            sessionRepository.sessionExpired.collect {
+                sessionExpiredFlag.value = true
+            }
+        }
+    }
+
     val uiState: StateFlow<MainScreenUiState> = sessionRepository.userSession
-        .map { user ->
+        .combine(sessionExpiredFlag) { user, expired ->
             if (user.isLoggedIn) MainScreenUiState.Loaded
-            else MainScreenUiState.Auth
+            else MainScreenUiState.Auth(sessionExpired = expired)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MainScreenUiState.Loading)
 
@@ -30,6 +40,6 @@ class RootViewModel(
 
 sealed class MainScreenUiState {
     data object Loading : MainScreenUiState()
-    data object Auth : MainScreenUiState()
+    data class Auth(val sessionExpired: Boolean = false) : MainScreenUiState()
     data object Loaded : MainScreenUiState()
 }

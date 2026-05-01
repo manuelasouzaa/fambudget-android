@@ -1,5 +1,6 @@
 package br.com.manuelasouzaa.fambudget.core.network.client
 
+import android.util.Log
 import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.network.resource.Resource
 import br.com.manuelasouzaa.fambudget.core.network.resource.UiText
@@ -19,6 +20,11 @@ abstract class BaseHttpClient(
         return withContext(dispatcher) {
             try {
                 val response = apiCall()
+
+                Log.d(
+                    "BaseHttpClient",
+                    "URL: ${response.raw().request.url} | Code: ${response.code()} | Body: ${response.body()}"
+                )
 
                 if (response.isSuccessful) {
                     val body = response.body()

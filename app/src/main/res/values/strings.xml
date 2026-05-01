@@ -48,6 +48,8 @@
     <string name="new_expense">Nova Despesa</string>
     <string name="new_income">Nova Receita</string>
 
+    <string name="expired_session">Sua sessão expirou por inatividade. Faça login novamente.</string>
+
     <string name="error_no_internet">Sem conexão com a internet</string>
     <string name="error_connection_timeout">A conexão expirou, tente novamente</string>
     <string name="error_unknown">Ocorreu um erro inesperado</string>
