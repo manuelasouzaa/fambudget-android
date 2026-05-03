@@ -4,7 +4,9 @@ import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.ExpensesServi
 import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.ExpensesWebClient
 import br.com.manuelasouzaa.fambudget.feature.expenses.data.repository.ExpensesRepositoryImpl
 import br.com.manuelasouzaa.fambudget.feature.expenses.domain.ExpensesRepository
+import br.com.manuelasouzaa.fambudget.feature.expenses.ui.viewmodel.CreateExpenseFormViewModel
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -16,5 +18,7 @@ val expensesModule = module {
     singleOf(::ExpensesRepositoryImpl) bind ExpensesRepository::class
 
     singleOf(::ExpensesWebClient)
+
+    viewModelOf(::CreateExpenseFormViewModel)
 
 }

@@ -2,6 +2,7 @@
     <string name="app_name">FamBudget</string>
 
     <string name="return_title">Voltar</string>
+    <string name="save_title">Salvar</string>
 
     <string name="login_title">Bem-vindo de volta!</string>
     <string name="login_subtitle">Faça login para continuar gerenciando suas finanças.</string>
@@ -45,14 +46,31 @@
     <string name="reports">Relatórios</string>
     <string name="menu">Menu</string>
 
-    <string name="new_expense">Nova Despesa</string>
+    <string name="create_expense">Adicionar Despesa</string>
     <string name="new_income">Nova Receita</string>
+
+    <string name="name">Nome</string>
+    <string name="description_optional">Descrição (opcional)</string>
+    <string name="value">Valor</string>
+    <string name="date">Data</string>
+    <string name="date_payment">Data de pagamento</string>
+    <string name="is_expense_paid">Despesa paga</string>
+
+    <string name="expense_type">Tipo de despesa</string>
+    <string name="expense_type_fixed">Fixa</string>
+    <string name="expense_type_variable">Variável</string>
+    <string name="expense_type_seasonal">Sazonal</string>
+
+    <string name="payment_type">Tipo de pagamento</string>
 
     <string name="expired_session">Sua sessão expirou por inatividade. Faça login novamente.</string>
 
     <string name="error_no_internet">Sem conexão com a internet</string>
     <string name="error_connection_timeout">A conexão expirou, tente novamente</string>
     <string name="error_unknown">Ocorreu um erro inesperado</string>
+    <string name="error_empty_fields">Preencha todos os campos obrigatórios</string>
+
+    <string name="success_expense_created">Despesa criada com sucesso!</string>
 
     <string name="content_description_hide_password">Esconder senha</string>
     <string name="content_description_show_password">Exibir senha</string>

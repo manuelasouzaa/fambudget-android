@@ -1,6 +1,6 @@
 package br.com.manuelasouzaa.fambudget.feature.expenses.ui.model
 
-data class Expense(
+data class ExpenseUiModel(
     val name: String,
     val categoryId: Int,
     val typeExpenseId: Int,

@@ -5,6 +5,7 @@ import br.com.manuelasouzaa.fambudget.core.di.modules.appModule
 import br.com.manuelasouzaa.fambudget.core.di.modules.networkModule
 import br.com.manuelasouzaa.fambudget.core.di.modules.sessionModule
 import br.com.manuelasouzaa.fambudget.feature.auth.di.modules.authModule
+import br.com.manuelasouzaa.fambudget.feature.category.di.modules.categoryModule
 import br.com.manuelasouzaa.fambudget.feature.expenses.di.modules.expensesModule
 import br.com.manuelasouzaa.fambudget.feature.home.di.modules.homeModule
 import br.com.manuelasouzaa.fambudget.feature.income.di.modules.incomeModule
@@ -26,7 +27,8 @@ class FamBudgetApplication : Application() {
                     authModule,
                     homeModule,
                     expensesModule,
-                    incomeModule
+                    incomeModule,
+                    categoryModule
                 )
             )
         }

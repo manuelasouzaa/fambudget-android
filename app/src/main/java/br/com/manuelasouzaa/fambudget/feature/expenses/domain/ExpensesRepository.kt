@@ -6,4 +6,16 @@ interface ExpensesRepository {
 
     suspend fun getExpensesTotal(month: Int, year: Int): Resource<Double>
 
+    suspend fun saveExpense(
+        name: String,
+        categoryId: Int?,
+        value: String,
+        initialDate: String,
+        isExpensePaid: Boolean,
+        paymentDate: String,
+        description: String,
+        expenseType: Int,
+        typePaymentId: Int
+    ): Resource<Unit>
+
 }

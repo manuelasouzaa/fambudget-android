@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,7 +21,7 @@ import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetSnackbar
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetTopBar
 import br.com.manuelasouzaa.fambudget.core.ui.model.SnackbarType
 import br.com.manuelasouzaa.fambudget.feature.budgets.ui.BudgetsScreen
-import br.com.manuelasouzaa.fambudget.feature.expenses.ui.AddExpenseFormScreen
+import br.com.manuelasouzaa.fambudget.feature.expenses.ui.CreateExpenseFormScreen
 import br.com.manuelasouzaa.fambudget.feature.home.ui.HomeScreen
 import br.com.manuelasouzaa.fambudget.feature.income.ui.AddIncomeFormScreen
 import br.com.manuelasouzaa.fambudget.feature.menu.ui.MenuScreen
@@ -41,6 +43,10 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
         ScreenDestinations.AddExpenseFormScreen.name,
         ScreenDestinations.AddIncomeFormScreen.name
     )
+
+    fun onSnackbarTypeChange(type: SnackbarType) {
+        snackbarType = type
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -69,9 +75,11 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
             navController = navController,
             startDestination = ScreenDestinations.HomeScreen.name
         ) {
-            composable(ScreenDestinations.HomeScreen.name) {
+            composable(ScreenDestinations.HomeScreen.name) { backStackEntry ->
+                val lifecycleState by backStackEntry.lifecycle.currentStateFlow.collectAsState()
                 HomeScreen(
                     modifier = modifier,
+                    refreshTrigger = lifecycleState,
                     onNavigateToNewIncome = {
                         navController.navigate(
                             ScreenDestinations.AddIncomeFormScreen.name
@@ -106,7 +114,11 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
             }
 
             composable(ScreenDestinations.AddExpenseFormScreen.name) {
-                AddExpenseFormScreen()
+                CreateExpenseFormScreen(
+                    modifier,
+                    snackbarHostState = snackbarHostState,
+                    onSnackbarTypeChange = ::onSnackbarTypeChange,
+                    onNavigateBack = { navController.popBackStack() })
             }
 
             composable(ScreenDestinations.AddIncomeFormScreen.name) {

@@ -26,7 +26,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.Lifecycle
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.ui.theme.FamBudgetTheme
-import br.com.manuelasouzaa.fambudget.feature.home.di.modules.homeModule
 import br.com.manuelasouzaa.fambudget.feature.home.ui.components.HomeScreenCardView
 import br.com.manuelasouzaa.fambudget.feature.home.ui.uistate.HomeUiStateData
 import br.com.manuelasouzaa.fambudget.feature.home.ui.viewmodel.HomeUiState
@@ -59,11 +58,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    refreshTrigger: Lifecycle.State = Lifecycle.State.RESUMED,
     onNavigateToNewExpense: () -> Unit = {},
     onNavigateToNewIncome: () -> Unit = {}
 ) {
     val viewModel: HomeViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(refreshTrigger) {
+        if (refreshTrigger == Lifecycle.State.RESUMED) viewModel.refresh()
+    }
 
     var isRefreshing by remember { mutableStateOf(false) }
 
@@ -213,7 +217,7 @@ fun HomeContent(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FabMenuItem(
-                        text = stringResource(R.string.new_expense),
+                        text = stringResource(R.string.create_expense),
                         onClick = {
                             isFabExpanded = false
                             onNavigateToNewExpense()
