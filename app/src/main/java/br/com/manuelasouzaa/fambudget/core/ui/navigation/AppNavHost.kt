@@ -122,7 +122,12 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
             }
 
             composable(ScreenDestinations.AddIncomeFormScreen.name) {
-                AddIncomeFormScreen()
+                AddIncomeFormScreen(
+                    modifier,
+                    snackbarHostState = snackbarHostState,
+                    onSnackbarTypeChange = ::onSnackbarTypeChange,
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
         }
     }

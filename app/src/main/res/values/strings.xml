@@ -47,7 +47,7 @@
     <string name="menu">Menu</string>
 
     <string name="create_expense">Adicionar Despesa</string>
-    <string name="new_income">Nova Receita</string>
+    <string name="create_income">Adicionar Receita</string>
 
     <string name="name">Nome</string>
     <string name="description_optional">Descrição (opcional)</string>
@@ -71,6 +71,7 @@
     <string name="error_empty_fields">Preencha todos os campos obrigatórios</string>
 
     <string name="success_expense_created">Despesa criada com sucesso!</string>
+    <string name="success_income_created">Receita criada com sucesso!</string>
 
     <string name="content_description_hide_password">Esconder senha</string>
     <string name="content_description_show_password">Exibir senha</string>

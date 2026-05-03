@@ -6,4 +6,6 @@ interface IncomeRepository {
 
     suspend fun getIncomeTotal(month: Int, year: Int): Resource<Double>
 
+    suspend fun saveIncome(value: String, dateInitial: String, description: String): Resource<Unit>
+
 }

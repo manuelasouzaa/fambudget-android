@@ -4,7 +4,9 @@ import br.com.manuelasouzaa.fambudget.feature.income.data.remote.IncomeService
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.IncomeWebClient
 import br.com.manuelasouzaa.fambudget.feature.income.data.repository.IncomeRepositoryImpl
 import br.com.manuelasouzaa.fambudget.feature.income.domain.IncomeRepository
+import br.com.manuelasouzaa.fambudget.feature.income.ui.viewmodel.AddIncomeFormViewModel
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -16,5 +18,7 @@ val incomeModule = module {
     singleOf(::IncomeWebClient)
 
     singleOf(::IncomeRepositoryImpl) bind IncomeRepository::class
+
+    viewModelOf(::AddIncomeFormViewModel)
 
 }

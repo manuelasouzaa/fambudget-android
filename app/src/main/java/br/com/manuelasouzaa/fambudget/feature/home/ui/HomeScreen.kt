@@ -224,7 +224,7 @@ fun HomeContent(
                         }
                     )
                     FabMenuItem(
-                        text = stringResource(R.string.new_income),
+                        text = stringResource(R.string.create_income),
                         onClick = {
                             isFabExpanded = false
                             onNavigateToNewIncome()
