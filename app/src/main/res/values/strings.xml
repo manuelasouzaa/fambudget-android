@@ -39,9 +39,12 @@
 
     <string name="expenses">Despesas</string>
     <string name="income">Receitas</string>
+    <string name="income_singular">Receita</string>
     <string name="category">Categoria</string>
     <string name="home">Início</string>
     <string name="transactions">Transações</string>
+    <string name="select_period">Selecionar período</string>
+    <string name="extrato">Extrato</string>
     <string name="budgets">Orçamentos</string>
     <string name="reports">Relatórios</string>
     <string name="menu">Menu</string>
@@ -70,10 +73,14 @@
     <string name="error_unknown">Ocorreu um erro inesperado</string>
     <string name="error_empty_fields">Preencha todos os campos obrigatórios</string>
 
+    <string name="error_load_transactions">Erro ao carregar transações</string>
+    <string name="no_transactions">Nenhuma transação encontrada neste mês.</string>
+    <string name="statement">Extrato</string>
     <string name="success_expense_created">Despesa criada com sucesso!</string>
     <string name="success_income_created">Receita criada com sucesso!</string>
 
-    <string name="content_description_hide_password">Esconder senha</string>
+    <string name="logout">Logout</string>
+    <string name="balance_at">Saldo em %1$s</string>
     <string name="content_description_show_password">Exibir senha</string>
 
 </resources>

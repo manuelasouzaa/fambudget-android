@@ -1,7 +1,9 @@
 package br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class ExpenseResponse(
     @field:JsonProperty("id")
     val id: Int,

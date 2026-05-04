@@ -9,6 +9,7 @@ import br.com.manuelasouzaa.fambudget.feature.category.di.modules.categoryModule
 import br.com.manuelasouzaa.fambudget.feature.expenses.di.modules.expensesModule
 import br.com.manuelasouzaa.fambudget.feature.home.di.modules.homeModule
 import br.com.manuelasouzaa.fambudget.feature.income.di.modules.incomeModule
+import br.com.manuelasouzaa.fambudget.feature.transactions.di.modules.transactionsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -28,7 +29,8 @@ class FamBudgetApplication : Application() {
                     homeModule,
                     expensesModule,
                     incomeModule,
-                    categoryModule
+                    categoryModule,
+                    transactionsModule
                 )
             )
         }
