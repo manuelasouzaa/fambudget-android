@@ -1,6 +1,7 @@
 package br.com.manuelasouzaa.fambudget.feature.income.data.remote
 
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.CreateIncomeRequest
+import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.IncomeListResponse
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.IncomeTotalResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -18,5 +19,11 @@ interface IncomeService {
 
     @POST("v1/income")
     suspend fun createIncome(@Body request: CreateIncomeRequest): Response<Unit>
+
+    @GET("v1/income/user")
+    suspend fun getIncomes(
+        @Query("month") month: Int,
+        @Query("year") year: Int
+    ): Response<IncomeListResponse>
 
 }

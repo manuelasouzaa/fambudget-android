@@ -1,6 +1,7 @@
 package br.com.manuelasouzaa.fambudget.feature.expenses.data.remote
 
 import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.model.CreateExpenseRequest
+import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.model.ExpenseListResponse
 import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.model.ExpenseResponse
 import br.com.manuelasouzaa.fambudget.feature.expenses.data.remote.model.ExpensesTotalResponse
 import retrofit2.Response
@@ -19,5 +20,11 @@ interface ExpensesService {
 
     @POST("v1/expense")
     suspend fun createExpense(@Body createExpenseRequest: CreateExpenseRequest): Response<ExpenseResponse>
+
+    @GET("v1/expense/user/paid")
+    suspend fun getPaidExpenses(
+        @Query("month") month: Int,
+        @Query("year") year: Int
+    ): Response<ExpenseListResponse>
 
 }
