@@ -66,8 +66,8 @@ fun FamBudgetNavBar(
     }
 }
 
-data class BottomNavBarItem(
-    val destinations: ScreenDestinations,
-    @StringRes val title: Int,
-    @DrawableRes val icon: Int
+private data class BottomNavBarItem(
+    val destination: ScreenDestinations,
+    @field:StringRes val title: Int,
+    @field:DrawableRes val icon: Int
 )

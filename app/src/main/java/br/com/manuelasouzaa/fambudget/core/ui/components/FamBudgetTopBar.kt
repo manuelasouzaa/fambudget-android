@@ -27,6 +27,7 @@ import br.com.manuelasouzaa.fambudget.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FamBudgetTopBar(
+    isMenuSelected: Boolean = false,
     onMenuIconClick: () -> Unit
 ) {
     Column {
@@ -54,7 +55,7 @@ fun FamBudgetTopBar(
                     onClick = onMenuIconClick,
                     modifier = Modifier.size(50.dp).padding(8.dp),
                     colors = IconButtonDefaults.iconButtonColors()
-                        .copy(contentColor = MaterialTheme.colorScheme.tertiary)
+                        .copy(contentColor = if (isMenuSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_menu),
@@ -62,7 +63,9 @@ fun FamBudgetTopBar(
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary)
+                        colorFilter = ColorFilter.tint(
+                            if (isMenuSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                        )
                     )
                 }
             })

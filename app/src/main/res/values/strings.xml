@@ -51,16 +51,25 @@
     <string name="negative_balance">Saldo Negativo</string>
 
     <string name="expenses">Despesas</string>
+    <string name="pending_expenses">Despesas pendentes</string>
+    <string name="paid_expenses">Despesas pagas</string>
+
     <string name="income">Receitas</string>
+
     <string name="income_singular">Receita</string>
     <string name="category">Categoria</string>
+    <string name="categories_title">Categorias</string>
+
     <string name="home">Início</string>
+    <string name="menu">Menu</string>
+
     <string name="transactions">Transações</string>
     <string name="select_period">Selecionar período</string>
     <string name="extrato">Extrato</string>
     <string name="budgets">Orçamentos</string>
     <string name="reports">Relatórios</string>
-    <string name="menu">Menu</string>
+    <string name="user_profile">Meu perfil</string>
+    <string name="family">Família</string>
 
     <string name="create_expense">Adicionar Despesa</string>
     <string name="create_income">Adicionar Receita</string>
