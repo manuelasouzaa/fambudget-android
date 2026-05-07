@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.manuelasouzaa.fambudget.R
+import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetErrorScreen
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetMonthSelector
 import br.com.manuelasouzaa.fambudget.core.ui.theme.primary
 import br.com.manuelasouzaa.fambudget.feature.transactions.ui.model.TransactionGroup
@@ -61,11 +62,9 @@ fun TransactionsScreen(modifier: Modifier = Modifier) {
                     .wrapContentSize()
             )
 
-            TransactionsUiState.Error -> Text(
-                text = stringResource(R.string.error_load_transactions),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+            is TransactionsUiState.Error -> FamBudgetErrorScreen(
+                onRetry = { viewModel.reload() },
+                messageRes = state.messageRes
             )
 
             is TransactionsUiState.Success -> {

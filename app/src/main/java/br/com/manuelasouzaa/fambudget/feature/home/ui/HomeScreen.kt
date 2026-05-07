@@ -33,7 +33,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.Lifecycle
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +46,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import br.com.manuelasouzaa.fambudget.R
+import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetErrorScreen
 import br.com.manuelasouzaa.fambudget.core.ui.theme.FamBudgetTheme
 import br.com.manuelasouzaa.fambudget.feature.home.ui.components.HomeScreenCardView
 import br.com.manuelasouzaa.fambudget.feature.home.ui.uistate.HomeUiStateData
@@ -72,7 +73,7 @@ fun HomeScreen(
     var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState) {
-        if (uiState is HomeUiState.Success)
+        if (uiState !is HomeUiState.Loading)
             isRefreshing = false
     }
 
@@ -82,7 +83,10 @@ fun HomeScreen(
     }
 
     when (val uiState = uiState) {
-        HomeUiState.Error -> {}
+        is HomeUiState.Error -> FamBudgetErrorScreen(
+            onRetry = { viewModel.refresh() },
+            messageRes = uiState.messageRes
+        )
 
         HomeUiState.Loading -> {
             if (!isRefreshing)
@@ -127,7 +131,8 @@ fun HomeContent(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(20.dp).verticalScroll(rememberScrollState()),
+                .padding(20.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(36.dp)
         ) {
             Text(

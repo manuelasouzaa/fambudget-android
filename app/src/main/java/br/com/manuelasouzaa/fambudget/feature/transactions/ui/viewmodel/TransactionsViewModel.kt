@@ -1,15 +1,17 @@
 package br.com.manuelasouzaa.fambudget.feature.transactions.ui.viewmodel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.network.resource.Resource
+import br.com.manuelasouzaa.fambudget.ext.toStringRes
 import br.com.manuelasouzaa.fambudget.feature.transactions.domain.TransactionsRepository
 import br.com.manuelasouzaa.fambudget.feature.transactions.ui.model.TransactionGroup
 import br.com.manuelasouzaa.fambudget.feature.transactions.ui.model.TransactionItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.YearMonth
 
 class TransactionsViewModel(
@@ -22,7 +24,13 @@ class TransactionsViewModel(
     private val _currentMonth = MutableStateFlow(YearMonth.now())
     val currentMonth = _currentMonth.asStateFlow()
 
-    init { load() }
+    init {
+        load()
+    }
+
+    fun reload() {
+        load()
+    }
 
     fun jumpToMonth(yearMonth: YearMonth) {
         _currentMonth.value = yearMonth
@@ -43,25 +51,30 @@ class TransactionsViewModel(
         val month = _currentMonth.value
         viewModelScope.launch {
             _uiState.value = TransactionsUiState.Loading
-            _uiState.value = when (val result = repository.getTransactions(month.monthValue, month.year)) {
-                is Resource.Success -> {
-                    val groups = result.data
-                    val balance = groups.flatMap { it.items }.fold(0.0) { acc, item ->
-                        when (item) {
-                            is TransactionItem.Income -> acc + item.value
-                            is TransactionItem.Expense -> acc - item.value
+            _uiState.value =
+                when (val result = repository.getTransactions(month.monthValue, month.year)) {
+                    is Resource.Success -> {
+                        val groups = result.data
+                        val balance = groups.flatMap { it.items }.fold(0.0) { acc, item ->
+                            when (item) {
+                                is TransactionItem.Income -> acc + item.value
+                                is TransactionItem.Expense -> acc - item.value
+                            }
                         }
+                        TransactionsUiState.Success(groups, balance)
                     }
-                    TransactionsUiState.Success(groups, balance)
+
+                    is Resource.Error -> TransactionsUiState.Error(result.uiMessage.toStringRes())
                 }
-                is Resource.Error -> TransactionsUiState.Error
-            }
         }
     }
 }
 
 sealed class TransactionsUiState {
     data object Loading : TransactionsUiState()
-    data object Error : TransactionsUiState()
-    data class Success(val groups: List<TransactionGroup>, val balance: Double) : TransactionsUiState()
+    data class Error(@field:StringRes val messageRes: Int = R.string.error_unknown) :
+        TransactionsUiState()
+
+    data class Success(val groups: List<TransactionGroup>, val balance: Double) :
+        TransactionsUiState()
 }

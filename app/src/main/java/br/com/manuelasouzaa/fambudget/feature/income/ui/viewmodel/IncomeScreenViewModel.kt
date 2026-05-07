@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.manuelasouzaa.fambudget.core.network.resource.Resource
 import br.com.manuelasouzaa.fambudget.ext.toCurrency
+import br.com.manuelasouzaa.fambudget.ext.toStringRes
 import br.com.manuelasouzaa.fambudget.feature.income.domain.IncomeRepository
 import br.com.manuelasouzaa.fambudget.feature.income.ui.uistate.IncomeScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,7 +50,9 @@ class IncomeScreenViewModel(
                     )
                 }
 
-                is Resource.Error -> _uiState.value = IncomeScreenUiState.Error
+                is Resource.Error -> _uiState.value = IncomeScreenUiState.Error(
+                    messageRes = result.uiMessage.toStringRes()
+                )
             }
         }
     }

@@ -1,9 +1,12 @@
 package br.com.manuelasouzaa.fambudget.feature.home.ui.viewmodel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.manuelasouzaa.fambudget.R
 import br.com.manuelasouzaa.fambudget.core.network.resource.Resource
 import br.com.manuelasouzaa.fambudget.ext.toCurrency
+import br.com.manuelasouzaa.fambudget.ext.toStringRes
 import br.com.manuelasouzaa.fambudget.feature.home.domain.HomeRepository
 import br.com.manuelasouzaa.fambudget.feature.home.ui.uistate.HomeUiStateData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,14 +25,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private var expenses: Double = 0.0
 
     init {
-        viewModelScope.launch {
-            getUserName()
-            getExpensesTotal()
-            getIncomeTotal()
-            getCurrentBalance()
-
-            _uiState.value = HomeUiState.Success(uiStateData.value)
-        }
+        refresh()
     }
 
     fun refresh() {
@@ -37,8 +33,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             _uiState.value = HomeUiState.Loading
 
             getUserName()
-            getExpensesTotal()
-            getIncomeTotal()
+            if (!getExpensesTotal()) return@launch
+            if (!getIncomeTotal()) return@launch
             getCurrentBalance()
 
             _uiState.value = HomeUiState.Success(uiStateData.value)
@@ -50,32 +46,32 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         _uiStateData.value = uiStateData.value.copy(userName = userName)
     }
 
-    private suspend fun getExpensesTotal() {
-        val resp = repository.getUserExpensesTotal()
-
-        when (resp) {
+    private suspend fun getExpensesTotal(): Boolean {
+        return when (val resp = repository.getUserExpensesTotal()) {
             is Resource.Error -> {
-                _uiState.value = HomeUiState.Error
+                _uiState.value = HomeUiState.Error(resp.uiMessage.toStringRes())
+                false
             }
 
             is Resource.Success -> {
                 expenses = resp.data
                 _uiStateData.value = uiStateData.value.copy(expensesTotal = resp.data.toCurrency())
+                true
             }
         }
     }
 
-    private suspend fun getIncomeTotal() {
-        val resp = repository.getUserIncomeTotal()
-
-        when (resp) {
+    private suspend fun getIncomeTotal(): Boolean {
+        return when (val resp = repository.getUserIncomeTotal()) {
             is Resource.Error -> {
-                _uiState.value = HomeUiState.Error
+                _uiState.value = HomeUiState.Error(resp.uiMessage.toStringRes())
+                false
             }
 
             is Resource.Success -> {
                 income = resp.data
                 _uiStateData.value = uiStateData.value.copy(incomeTotal = resp.data.toCurrency())
+                true
             }
         }
     }
@@ -92,5 +88,5 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 sealed class HomeUiState {
     data object Loading : HomeUiState()
     data class Success(val uiStateData: HomeUiStateData) : HomeUiState()
-    data object Error : HomeUiState()
+    data class Error(@field:StringRes val messageRes: Int = R.string.error_unknown) : HomeUiState()
 }

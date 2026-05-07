@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.manuelasouzaa.fambudget.R
+import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetErrorScreen
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetMonthSelector
 import br.com.manuelasouzaa.fambudget.core.ui.theme.FamBudgetTheme
 import br.com.manuelasouzaa.fambudget.ext.toCurrency
@@ -85,7 +86,8 @@ fun IncomeScreen(
             onMonthSelected = viewModel::jumpToMonth,
             onEdit = onNavigateToEditIncome,
             onDelete = { incomeToDelete = it },
-            onNavigateToNewIncome = onNavigateToNewIncome
+            onNavigateToNewIncome = onNavigateToNewIncome,
+            onRetry = viewModel::load
         )
     }
 
@@ -245,7 +247,8 @@ private fun IncomeContent(
     onMonthSelected: (YearMonth) -> Unit = {},
     onEdit: (IncomeResponse) -> Unit = {},
     onDelete: (IncomeResponse) -> Unit = {},
-    onNavigateToNewIncome: () -> Unit = {}
+    onNavigateToNewIncome: () -> Unit = {},
+    onRetry: () -> Unit = {}
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -256,22 +259,20 @@ private fun IncomeContent(
                 onMonthSelected = onMonthSelected
             )
 
-            when (val state = uiState) {
+            when (uiState) {
                 IncomeScreenUiState.Loading -> CircularProgressIndicator(
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize()
                 )
 
-                IncomeScreenUiState.Error -> Text(
-                    text = stringResource(R.string.error_unknown),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
+                is IncomeScreenUiState.Error -> FamBudgetErrorScreen(
+                    onRetry = onRetry,
+                    messageRes = uiState.messageRes
                 )
 
                 is IncomeScreenUiState.Success -> {
-                    if (state.incomes.isEmpty()) {
+                    if (uiState.incomes.isEmpty()) {
                         Text(
                             text = stringResource(R.string.no_incomes),
                             modifier = Modifier
@@ -280,9 +281,9 @@ private fun IncomeContent(
                             style = MaterialTheme.typography.bodyLarge
                         )
                     } else {
-                        TotalCard(state.total)
+                        TotalCard(uiState.total)
                         IncomeList(
-                            incomes = state.incomes,
+                            incomes = uiState.incomes,
                             onEdit = onEdit,
                             onDelete = onDelete
                         )

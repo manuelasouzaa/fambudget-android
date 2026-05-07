@@ -93,7 +93,7 @@
 
     <string name="error_no_internet">Sem conexão com a internet</string>
     <string name="error_connection_timeout">A conexão expirou, tente novamente</string>
-    <string name="error_unknown">Ocorreu um erro inesperado</string>
+    <string name="error_unknown">Não foi possível carregar os dados</string>
     <string name="error_empty_fields">Preencha todos os campos obrigatórios</string>
 
     <string name="error_load_transactions">Erro ao carregar transações</string>
@@ -110,6 +110,7 @@
     <string name="cancel">Cancelar</string>
 
     <string name="logout">Logout</string>
+    <string name="retry">Tentar novamente</string>
     <string name="balance_at">Saldo em %1$s</string>
 
     <string name="content_description_hide_password">Esconder senha</string>
