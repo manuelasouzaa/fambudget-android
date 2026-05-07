@@ -5,6 +5,7 @@ import br.com.manuelasouzaa.fambudget.core.network.resource.Resource
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.CreateIncomeRequest
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.IncomeListResponse
 import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.IncomeTotalResponse
+import br.com.manuelasouzaa.fambudget.feature.income.data.remote.model.UpdateIncomeRequest
 
 class IncomeWebClient(private val service: IncomeService) : BaseHttpClient() {
 
@@ -18,6 +19,14 @@ class IncomeWebClient(private val service: IncomeService) : BaseHttpClient() {
 
     suspend fun getIncomes(month: Int, year: Int): Resource<IncomeListResponse> {
         return safeApiCall { service.getIncomes(month, year) }
+    }
+
+    suspend fun updateIncome(incomeId: Int, request: UpdateIncomeRequest): Resource<Unit> {
+        return safeApiCall { service.updateIncome(incomeId, request) }
+    }
+
+    suspend fun deleteIncome(incomeId: Int): Resource<Unit> {
+        return safeApiCall { service.deleteIncome(incomeId) }
     }
 
 }

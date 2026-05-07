@@ -26,8 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.manuelasouzaa.fambudget.R
@@ -103,7 +105,9 @@ fun AddIncomeFormContent(
             ) {
                 Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null)
             }
-            Text(stringResource(R.string.create_income), style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(
+                if (uiState.isEditMode) R.string.edit_income_title else R.string.create_income
+            ), style = MaterialTheme.typography.titleLarge)
         }
 
         Column(
@@ -116,10 +120,14 @@ fun AddIncomeFormContent(
         ) {
             Text(text = stringResource(R.string.value), style = MaterialTheme.typography.bodyLarge)
 
+            val displayValue = uiState.value.toCurrencyDisplay()
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = uiState.value.toCurrencyDisplay(),
-                onValueChange = { onValueChange(it.filter { c -> c.isDigit() }) },
+                value = TextFieldValue(
+                    text = displayValue,
+                    selection = TextRange(displayValue.length)
+                ),
+                onValueChange = { onValueChange(it.text.filter { c -> c.isDigit() }) },
                 singleLine = true,
                 textStyle = MaterialTheme.typography.bodyLarge,
                 keyboardOptions = KeyboardOptions.Default.copy(

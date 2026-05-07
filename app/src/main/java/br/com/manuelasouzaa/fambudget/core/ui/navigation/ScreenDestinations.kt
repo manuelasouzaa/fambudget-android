@@ -14,7 +14,20 @@ sealed class ScreenDestinations(val name: String) {
 
     data object CategoriesScreen : ScreenDestinations("categories_screen")
 
-    data object AddIncomeFormScreen : ScreenDestinations("add_income_form_screen")
+    data object AddIncomeFormScreen : ScreenDestinations("add_income_form_screen") {
+        const val ROUTE =
+            "add_income_form_screen?incomeId={incomeId}&incomeValue={incomeValue}&incomeDate={incomeDate}&incomeDescription={incomeDescription}"
+
+        fun route(
+            incomeId: Int? = null,
+            value: String? = null,
+            date: String? = null,
+            description: String? = null
+        ): String {
+            if (incomeId == null) return "add_income_form_screen"
+            return "add_income_form_screen?incomeId=$incomeId&incomeValue=${value.orEmpty()}&incomeDate=${date.orEmpty()}&incomeDescription=${description.orEmpty()}"
+        }
+    }
 
     data object IncomeScreen : ScreenDestinations("income_screen")
 

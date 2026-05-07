@@ -78,6 +78,7 @@
     <string name="description_optional">Descrição (opcional)</string>
     <string name="value">Valor</string>
     <string name="date">Data</string>
+    <string name="total">Total</string>
     <string name="date_payment">Data de pagamento</string>
     <string name="is_expense_paid">Despesa paga</string>
 
@@ -100,6 +101,13 @@
     <string name="statement">Extrato</string>
     <string name="success_expense_created">Despesa criada com sucesso!</string>
     <string name="success_income_created">Receita criada com sucesso!</string>
+    <string name="success_income_updated">Receita atualizada com sucesso!</string>
+    <string name="no_incomes">Nenhuma receita encontrada neste mês.</string>
+    <string name="delete_income_title">Excluir receita</string>
+    <string name="delete_income_message">Tem certeza que deseja excluir esta receita?</string>
+    <string name="edit_income_title">Editar receita</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
 
     <string name="logout">Logout</string>
     <string name="balance_at">Saldo em %1$s</string>

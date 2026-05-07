@@ -16,10 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetNavBar
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetSnackbar
 import br.com.manuelasouzaa.fambudget.core.ui.components.FamBudgetTopBar
@@ -48,14 +50,15 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
     val currentRoute by navController.currentBackStackEntryAsState()
     val route = currentRoute?.destination?.route
 
-    val fullScreenRoutes = listOf(
-        ScreenDestinations.AddExpenseFormScreen.name,
-        ScreenDestinations.AddIncomeFormScreen.name
-    )
 
     fun onSnackbarTypeChange(type: SnackbarType) {
         snackbarType = type
     }
+
+    val fullScreenRoutes = listOf(
+        ScreenDestinations.AddExpenseFormScreen.name,
+        ScreenDestinations.AddIncomeFormScreen.ROUTE
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -99,7 +102,7 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                     modifier = modifier,
                     refreshTrigger = lifecycleState,
                     onNavigateToNewIncome = {
-                        navController.navigate(ScreenDestinations.AddIncomeFormScreen.name)
+                        navController.navigate(ScreenDestinations.AddIncomeFormScreen.route())
                     },
                     onNavigateToNewExpense = {
                         navController.navigate(ScreenDestinations.AddExpenseFormScreen.name)
@@ -145,7 +148,19 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                     onNavigateBack = { navController.popBackStack() })
             }
 
-            composable(ScreenDestinations.AddIncomeFormScreen.name) {
+            composable(
+                route = ScreenDestinations.AddIncomeFormScreen.ROUTE,
+                arguments = listOf(
+                    navArgument("incomeId") {
+                        type = NavType.StringType; nullable = true; defaultValue = null
+                    },
+                    navArgument("incomeValue") { type = NavType.StringType; defaultValue = "" },
+                    navArgument("incomeDate") { type = NavType.StringType; defaultValue = "" },
+                    navArgument("incomeDescription") {
+                        type = NavType.StringType; defaultValue = ""
+                    }
+                )
+            ) {
                 AddIncomeFormScreen(
                     modifier,
                     snackbarHostState = snackbarHostState,
@@ -166,8 +181,26 @@ fun AppNavHost(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                 PaidExpensesScreen(modifier)
             }
 
-            composable(ScreenDestinations.IncomeScreen.name) {
-                IncomeScreen(modifier)
+            composable(ScreenDestinations.IncomeScreen.name) { backStackEntry ->
+                val lifecycleState by backStackEntry.lifecycle.currentStateFlow.collectAsState()
+                IncomeScreen(
+                    modifier = modifier,
+                    refreshTrigger = lifecycleState,
+                    onNavigateToNewIncome = {
+                        navController.navigate(ScreenDestinations.AddIncomeFormScreen.route())
+                    },
+                    onNavigateToEditIncome = { income ->
+                        val valueCents = (income.value * 100).toLong().toString()
+                        navController.navigate(
+                            ScreenDestinations.AddIncomeFormScreen.route(
+                                incomeId = income.id,
+                                value = valueCents,
+                                date = income.dateInitial ?: "",
+                                description = income.description ?: ""
+                            )
+                        )
+                    }
+                )
             }
 
             composable(ScreenDestinations.CategoriesScreen.name) {
