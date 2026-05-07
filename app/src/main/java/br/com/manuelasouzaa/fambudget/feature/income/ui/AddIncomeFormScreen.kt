@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,8 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AddIncomeFormScreen(
     modifier: Modifier = Modifier,
-    snackbarHostState: SnackbarHostState,
-    onSnackbarTypeChange: (SnackbarType) -> Unit,
+    onShowSnackbar: (String, SnackbarType) -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val viewModel: AddIncomeFormViewModel = koinViewModel()
@@ -57,14 +55,13 @@ fun AddIncomeFormScreen(
             snackbarMessage?.let { message ->
                 when (event) {
                     is FormEvent.Error -> {
-                        onSnackbarTypeChange(SnackbarType.ERROR)
-                        snackbarHostState.showSnackbar(message)
+                        onShowSnackbar(message, SnackbarType.ERROR)
                         if (event.navigateBack) onNavigateBack()
                     }
+
                     is FormEvent.Success -> {
-                        onSnackbarTypeChange(SnackbarType.INFO)
+                        onShowSnackbar(message, SnackbarType.INFO)
                         onNavigateBack()
-                        snackbarHostState.showSnackbar(message)
                     }
                 }
             }
@@ -105,9 +102,11 @@ fun AddIncomeFormContent(
             ) {
                 Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null)
             }
-            Text(stringResource(
-                if (uiState.isEditMode) R.string.edit_income_title else R.string.create_income
-            ), style = MaterialTheme.typography.titleLarge)
+            Text(
+                stringResource(
+                    if (uiState.isEditMode) R.string.edit_income_title else R.string.create_income
+                ), style = MaterialTheme.typography.titleLarge
+            )
         }
 
         Column(
@@ -145,7 +144,10 @@ fun AddIncomeFormContent(
                 onDateSelected = onDateChange
             )
 
-            Text(text = stringResource(R.string.description_optional), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.description_optional),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -161,11 +163,16 @@ fun AddIncomeFormContent(
             )
 
             Button(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 onClick = onSaveClick,
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text(text = stringResource(R.string.save_title), style = MaterialTheme.typography.titleLarge)
+                Text(
+                    text = stringResource(R.string.save_title),
+                    style = MaterialTheme.typography.titleLarge
+                )
             }
         }
     }

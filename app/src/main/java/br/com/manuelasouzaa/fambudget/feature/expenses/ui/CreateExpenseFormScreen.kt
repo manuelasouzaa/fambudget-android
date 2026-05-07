@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,8 +58,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CreateExpenseFormScreen(
     modifier: Modifier = Modifier,
-    snackbarHostState: SnackbarHostState,
-    onSnackbarTypeChange: (SnackbarType) -> Unit,
+    onShowSnackbar: (String, SnackbarType) -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val viewModel: CreateExpenseFormViewModel = koinViewModel()
@@ -73,14 +71,13 @@ fun CreateExpenseFormScreen(
             snackbarMessage?.let { message ->
                 when (event) {
                     is FormEvent.Error -> {
-                        onSnackbarTypeChange(SnackbarType.ERROR)
-                        snackbarHostState.showSnackbar(message)
+                        onShowSnackbar(message, SnackbarType.ERROR)
                         if (event.navigateBack) onNavigateBack()
                     }
+
                     is FormEvent.Success -> {
-                        onSnackbarTypeChange(SnackbarType.INFO)
+                        onShowSnackbar(message, SnackbarType.INFO)
                         onNavigateBack()
-                        snackbarHostState.showSnackbar(message)
                     }
                 }
             }
@@ -164,15 +161,27 @@ fun CreateExpenseFormContent(
                 shape = RoundedCornerShape(10.dp),
             )
 
-            Text(text = stringResource(R.string.category), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.category),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
-            CategoryDropDownMenu(categories = categories, onCategorySelected = onExpenseCategoryChange)
+            CategoryDropDownMenu(
+                categories = categories,
+                onCategorySelected = onExpenseCategoryChange
+            )
 
-            Text(text = stringResource(R.string.expense_type), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.expense_type),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
             ExpenseTypeButtonsRow(onExpenseTypeChange)
 
-            Text(text = stringResource(R.string.description_optional), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.description_optional),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -211,10 +220,15 @@ fun CreateExpenseFormContent(
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(R.string.is_expense_paid), style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = stringResource(R.string.is_expense_paid),
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Checkbox(
                     checked = uiState.isExpensePaid,
                     onCheckedChange = { onExpensePaidStateChange(!uiState.isExpensePaid) }
@@ -226,7 +240,10 @@ fun CreateExpenseFormContent(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = stringResource(R.string.date_payment), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = stringResource(R.string.date_payment),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
 
                     FamBudgetDatePicker(
                         modifier = Modifier.fillMaxWidth(),
@@ -235,17 +252,25 @@ fun CreateExpenseFormContent(
                         onDateSelected = onExpensePaymentDateChange
                     )
 
-                    Text(text = stringResource(R.string.payment_type), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = stringResource(R.string.payment_type),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
 
                     PaymentTypeDropDownMenu(onPaymentTypeSelected = onPaymentTypeChange)
                 }
 
             Button(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 onClick = onSaveClick,
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text(text = stringResource(R.string.save_title), style = MaterialTheme.typography.titleLarge)
+                Text(
+                    text = stringResource(R.string.save_title),
+                    style = MaterialTheme.typography.titleLarge
+                )
             }
         }
     }

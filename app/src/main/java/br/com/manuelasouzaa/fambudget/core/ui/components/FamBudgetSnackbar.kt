@@ -24,6 +24,7 @@ import br.com.manuelasouzaa.fambudget.core.ui.model.SnackbarType
 fun FamBudgetSnackbar(
     snackbarHostState: SnackbarHostState,
     snackbarType: SnackbarType,
+    modifier: Modifier = Modifier
 ) {
     val containerColor = when (snackbarType) {
         SnackbarType.ERROR -> MaterialTheme.colorScheme.errorContainer
@@ -37,7 +38,7 @@ fun FamBudgetSnackbar(
 
     SnackbarHost(
         hostState = snackbarHostState,
-        modifier = Modifier
+        modifier = modifier
             .navigationBarsPadding()
             .padding(16.dp)
     ) { data ->
