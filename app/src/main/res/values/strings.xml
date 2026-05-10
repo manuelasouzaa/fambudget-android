@@ -109,6 +109,15 @@
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
 
+    <string name="default_categories_section">Categorias padrão</string>
+    <string name="user_categories_section">Minhas categorias</string>
+    <string name="no_user_categories">Nenhuma categoria personalizada.</string>
+    <string name="create_category_title">Nova categoria</string>
+    <string name="edit_category_title">Editar categoria</string>
+    <string name="delete_category_title">Excluir categoria</string>
+    <string name="delete_category_message">Tem certeza que deseja excluir esta categoria?</string>
+    <string name="color_label">Cor</string>
+
     <string name="logout">Logout</string>
     <string name="retry">Tentar novamente</string>
     <string name="balance_at">Saldo em %1$s</string>

@@ -29,9 +29,10 @@ fun CategoryDropDownMenu(
     onCategorySelected: (CategoryUiModel) -> Unit,
     categories: CategorySections
 ) {
-    if (categories.default.isEmpty()) return
+    val allCategories = categories.default + categories.user
+    if (allCategories.isEmpty()) return
     var isExpanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf(categories.default[0]) }
+    var selectedItem by remember { mutableStateOf(allCategories[0]) }
 
     ExposedDropdownMenuBox(
         expanded = isExpanded,
@@ -59,7 +60,7 @@ fun CategoryDropDownMenu(
             onDismissRequest = { isExpanded = false },
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ) {
-            categories.default.forEach { model ->
+            allCategories.forEach { model ->
                 DropdownMenuItem(
                     modifier = Modifier.fillMaxWidth(),
                     text = {
