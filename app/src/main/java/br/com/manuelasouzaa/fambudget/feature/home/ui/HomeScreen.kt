@@ -70,41 +70,34 @@ fun HomeScreen(
         if (refreshTrigger == Lifecycle.State.RESUMED) viewModel.refresh()
     }
 
-    var isRefreshing by remember { mutableStateOf(false) }
-
-    LaunchedEffect(uiState) {
-        if (uiState !is HomeUiState.Loading)
-            isRefreshing = false
+    val isRefreshing = when (val currentState = uiState) {
+        is HomeUiState.Loading -> true
+        is HomeUiState.Success -> currentState.loading
+        else -> false
     }
 
-    fun refresh() {
-        isRefreshing = true
-        viewModel.refresh()
-    }
-
-    when (val uiState = uiState) {
+    when (val currentState = uiState) {
         is HomeUiState.Error -> FamBudgetErrorScreen(
             onRetry = { viewModel.refresh() },
-            messageRes = uiState.messageRes
+            messageRes = currentState.messageRes
         )
 
         HomeUiState.Loading -> {
-            if (!isRefreshing)
-                Column(
-                    Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+            Column(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
 
         is HomeUiState.Success -> {
             HomeContent(
                 modifier = modifier,
-                uiState = uiState.uiStateData,
+                uiState = currentState.uiStateData,
                 isRefreshing = isRefreshing,
-                onRefresh = ::refresh,
+                onRefresh = viewModel::refresh,
                 onNavigateToNewExpense = onNavigateToNewExpense,
                 onNavigateToNewIncome = onNavigateToNewIncome
             )
@@ -125,7 +118,7 @@ fun HomeContent(
     var isFabExpanded by remember { mutableStateOf(false) }
     PullToRefreshBox(
         isRefreshing = isRefreshing,
-        onRefresh = { onRefresh() },
+        onRefresh = onRefresh,
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
