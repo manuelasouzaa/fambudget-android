@@ -1,5 +1,6 @@
 package br.com.manuelasouzaa.fambudget.core.ui.navigation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -41,23 +42,26 @@ internal fun MainScreen(
     val navController = rememberNavController()
     val currentRoute by navController.currentBackStackEntryAsState()
     val route = currentRoute?.destination?.route
+    val isMenuSelected = route == ScreenDestinations.MenuScreen.name
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             FamBudgetTopBar(
-                isMenuSelected = route == ScreenDestinations.MenuScreen.name
+                isMenuSelected = isMenuSelected
             ) {
                 if (route != ScreenDestinations.MenuScreen.name) {
                     navController.navigate(ScreenDestinations.MenuScreen.name)
-                }
+                } else navController.navigateUp()
             }
         },
         bottomBar = {
-            FamBudgetNavBar(modifier, route) {
-                navController.navigate(it) {
-                    popUpTo(ScreenDestinations.HomeScreen.name) { inclusive = false }
-                    launchSingleTop = true
+            AnimatedVisibility(visible = !isMenuSelected) {
+                FamBudgetNavBar(modifier, route) {
+                    navController.navigate(it) {
+                        popUpTo(ScreenDestinations.HomeScreen.name) { inclusive = false }
+                        launchSingleTop = true
+                    }
                 }
             }
         }
